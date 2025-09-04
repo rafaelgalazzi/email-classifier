@@ -1,0 +1,69 @@
+.baseButton {
+  min-width: 120px; /* 🔹 Largura mínima */
+  min-height: 40px; /* 🔹 Altura mínima */
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 5px;
+  transition: background 0.3s ease;
+  font-family: 'Inter', 'Roboto', 'Segoe UI', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  white-space: nowrap; /* Evita quebra de linha */
+}
+
+.baseButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Variantes */
+.primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.primary:hover:enabled {
+  background-color: #0056b3;
+}
+
+.secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.secondary:hover:enabled {
+  background-color: #545b62;
+}
+
+.danger {
+  background-color: #dc3545;
+  color: white;
+}
+
+.danger:hover:enabled {
+  background-color: #a71d2a;
+}
+
+/* Loader animado */
+.loader {
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid white;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

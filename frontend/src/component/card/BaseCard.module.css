@@ -1,0 +1,36 @@
+.cardContainer {
+  background-color: #1e1e1e;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  padding: 20px;
+  margin: 15px auto;
+  width: 100%;               /* Ocupa largura disponível */
+  max-width: 500px;          /* Limite em telas grandes */
+  min-width: 500px;          /* Largura mínima */
+  min-height: 500px;         /* Altura mínima */
+  color: #e0e0e0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+
+.cardContainer:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
+}
+
+/* Telas menores */
+@media (max-width: 768px) {
+  .cardContainer {
+    max-width: 90%;
+    min-width: 300px;         /* 🔹 Ajustei para não quebrar em tablets */
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cardContainer {
+    max-width: 100%;
+    min-width: auto;
+    padding: 10px;
+    border-radius: 6px;
+  }
+}
