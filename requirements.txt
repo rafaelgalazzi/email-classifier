@@ -1,0 +1,6 @@
+fastapi[standard]
+
+
+# Create a virtual env with python -m venv venv
+# Activate the virtual env .\venv\Scripts\Activate
+# fastapi dev main.py
