@@ -25,7 +25,8 @@ async def process_email(file: UploadFile = None):
 
     
     return JSONResponse(content={
-        "responseSugestion": process_email_result
+        "responseSugestion": process_email_result,
+        "category": "productive"
     })
 
 @app.post("/process-email-text")
@@ -33,7 +34,8 @@ async def process_email(file: UploadFile = None):
     process_email_result = email_controller.process_email_text(file)
 
 
-    
+
     return JSONResponse(content={
-        "responseSugestion": process_email_result
+        "responseSugestion": process_email_result,
+        "category": "productive"
     })

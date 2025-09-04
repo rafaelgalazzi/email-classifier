@@ -5,7 +5,6 @@ class ProcessEmailService:
 
     def process_email_file(self, data):
         return 'Aqui'
-    
 
     def process_email_text(self, data):
         return 'Aqui'

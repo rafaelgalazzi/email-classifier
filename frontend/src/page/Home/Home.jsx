@@ -13,9 +13,9 @@ export function Home() {
   const [emailText, setEmailText] = useState("");
   const [responseSugestion, setResponseSugestion] = useState("");
   const { sendEmailTextToProcess, sendEmailFileToProcess } = emailApi();
+
   function handleFiles(files) {
     setFilesToSent(files);
-    console.log("Arquivos selecionados:", files);
   }
 
   async function handleSendFile() {
