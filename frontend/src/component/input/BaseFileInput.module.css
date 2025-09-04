@@ -1,3 +1,4 @@
+/* área de drop/seleção (mantenha o que você já tinha) */
 .fileInputContainer {
   border: 2px dashed #666;
   border-radius: 8px;
@@ -9,17 +10,98 @@
   transition: background-color 0.3s ease;
 }
 
-.fileInputContainer.dragOver {
+.dragOver {
   background-color: #333;
   border-color: #82aaff;
 }
 
+.hiddenInput { display: none; }
+
 .fileInputText {
   font-size: 14px;
-  margin-top: 10px;
+  margin-top: 8px;
   color: #b0b0b0;
 }
 
-.hiddenInput {
-  display: none;
+/* grid de quadradinhos */
+.tilesGrid {
+  margin-top: 12px;
+  display: grid;
+  justify-items: center;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px;
+  width: 100%;
 }
+
+/* cada quadradinho */
+.tile {
+  position: relative;
+  background: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 10px;
+  width: 140px;        /* largura fixa */
+  height: 140px;       /* altura fixa */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  overflow: hidden;    /* evita estouro de conteúdo */
+}
+
+/* botão X */
+.removeBtn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #444;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  font-size: 16px;
+  
+}
+
+.removeBtn:hover {
+  background: #e53935;
+}
+
+/* ícone */
+.fileGlyph {
+  font-size: 28px;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+/* nome truncado (duas linhas) */
+.fileName {
+  font-size: 12px;
+  text-align: center;
+  max-width: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;       /* duas linhas */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+}
+
+/* metadados (tamanho) */
+.fileMeta {
+  font-size: 11px;
+  opacity: 0.75;
+  margin-top: 4px;
+}
+
+.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+

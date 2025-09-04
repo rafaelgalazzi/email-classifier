@@ -11,7 +11,7 @@ function App() {
     <Router>
       <nav style={{ margin: "10px" }}>
         <Link to="/" style={{ marginRight: "10px" }}>Home</Link>
-        <Link to="/about">About</Link>
+        <Link to="/about">Sobre</Link>
       </nav>
       <Routes>
         <Route path="/" element={<Home />} />

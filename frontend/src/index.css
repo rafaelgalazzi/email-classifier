@@ -47,8 +47,4 @@ body {
     border-radius: 0; /* Remove cantos arredondados para melhor aproveitamento */
     box-shadow: none; /* Remove sombra para visual mais limpo */
   }
-
-  body {
-    padding: 5px;
-  }
 }
