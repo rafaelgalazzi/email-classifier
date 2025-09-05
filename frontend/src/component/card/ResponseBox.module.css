@@ -6,7 +6,9 @@
   transition: background 0.3s ease;
   display: flex;
   flex-direction: column;
-  position: relative; /* necessário para o absolute funcionar */
+  position: relative;
+  max-height: 200px;   /* limite para overflow */
+  overflow: hidden;    /* garante que nada vaze */
 }
 
 .textArea {
@@ -17,7 +19,11 @@
   font-size: 14px;
   padding: 8px;
   color: #e0e0e0;
-  pointer-events: none;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow: auto;        /* permite rolagem */
+  max-height: 200px;     /* rolagem quando passar disso */
+  box-sizing: border-box;
 }
 
 .copyMessage {

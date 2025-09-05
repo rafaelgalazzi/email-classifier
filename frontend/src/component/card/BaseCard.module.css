@@ -5,8 +5,8 @@
   padding: 20px;
   margin: 15px auto;
   width: 100%;               /* Ocupa largura disponível */
-  max-width: 500px;          /* Limite em telas grandes */
-  min-width: 500px;          /* Largura mínima */
+  max-width: 600px;          /* Limite em telas grandes */
+  min-width: 600px;          /* Largura mínima */
   min-height: 500px;         /* Altura mínima */
   color: #e0e0e0;
   transition: transform 0.2s ease, box-shadow 0.2s ease;

@@ -1,4 +1,5 @@
 fastapi[standard]
+pypdf
 
 
 # Create a virtual env with python -m venv venv

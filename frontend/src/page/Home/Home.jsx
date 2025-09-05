@@ -6,35 +6,36 @@ import { BaseText } from "../../component/text/BaseText";
 import { emailApi } from "../../api/email.api";
 import { BaseTextArea } from "../../component/input/BaseTextArea";
 import { ResponseBox } from "../../component/card/ResponseBox";
+import { BaseRadioGroup } from "../../component/input/BaseRadioGroup";
 
 export function Home() {
   const [loading, setLoading] = useState(false);
   const [filesToSent, setFilesToSent] = useState([]);
   const [emailText, setEmailText] = useState("");
-  const [responseSugestion, setResponseSugestion] = useState("");
+  const [responseSugestionForFile, setResponseSugestionForFile] = useState("");
+  const [responseSugestionForText, setResponseSugestionForText] = useState("");
   const { sendEmailTextToProcess, sendEmailFileToProcess } = emailApi();
+  const [emailType, setEmailType] = useState("file");
 
   function handleFiles(files) {
     setFilesToSent(files);
   }
 
-  async function handleSendFile() {
-    if (!filesToSent?.length && !emailText.length) {
-      alert("Insira o arquivo do email a ser processado!");
+  function handleChangeEmailType(val) {
+    setEmailType(val);
+  }
+
+  async function handleSendText() {
+    if (!emailText.length) {
+      alert("Insira o texto do email a ser processado!");
       return;
     }
 
     try {
       setLoading(true);
-      if (filesToSent?.length) {
-        const response = await sendEmailFileToProcess(filesToSent);
-        console.log(response);
-        setResponseSugestion(response.data.responseSugestion);
-        return;
-      }
       const response = await sendEmailTextToProcess(emailText);
       console.log(response);
-      setResponseSugestion(response.data.responseSugestion);
+      setResponseSugestionForText(response.data.responseSugestion);
       return;
     } catch (e) {
       console.log(e);
@@ -44,8 +45,24 @@ export function Home() {
     }
   }
 
-  const isTextDisabled = filesToSent?.length > 0;
-  const isFileDisabled = emailText.trim() !== "";
+  async function handleSendFile() {
+    if (!filesToSent?.length) {
+      alert("Insira o arquivo do email a ser processado!");
+      return;
+    }
+    try {
+      setLoading(true);
+      const response = await sendEmailFileToProcess(filesToSent[0]);
+      console.log(response);
+      setResponseSugestionForFile(response.data.responseSugestion);
+      return;
+    } catch (e) {
+      console.log(e);
+      alert("Erro ao processar email: " + e);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <div>
@@ -55,42 +72,74 @@ export function Home() {
             Ferramenta para classificação de emails
           </BaseText>
           <BaseText fontSize="16px">
-            Insira o .pdf/.txt do email ou o conteúdo em texto abaixo
+            Selecione qual tipo de email classificar
           </BaseText>
+          <BaseRadioGroup
+            value={emailType}
+            options={[
+              { value: "file", label: "Arquivo .pdf/.txt" },
+              { value: "text", label: "Texto Puro" },
+            ]}
+            onChange={(val) => handleChangeEmailType(val)}
+          />
         </div>
 
-        <BaseTextArea
-          value={emailText}
-          onChange={setEmailText}
-          placeholder="Digite o email aqui"
-          maxLength={500}
-          disabled={isTextDisabled}
-        />
+        {emailType === "file" ? (
+          <div className="w-100">
+            <BaseText fontSize="16px">Insira os arquivos .pdf/.txt</BaseText>
+            <div className="p-md-3 p-1">
+              <BaseFileInput
+                onFilesSelected={handleFiles}
+                allowDirectories={true}
+                maxFiles={1}
+                accept=".pdf,.txt"
+              />
+            </div>
 
-        <BaseFileInput
-          onFilesSelected={handleFiles}
-          allowDirectories={true}
-          maxFiles={1}
-          accept=".pdf,.txt"
-          disabled={isFileDisabled}
-        />
-        <div className=" mt-0 mb-md-0 mb-3">
-          <BaseButton
-            variant="primary"
-            onClick={handleSendFile}
-            loading={loading}
-          >
-            Enviar Arquivo
-          </BaseButton>
-        </div>
-
-        {responseSugestion && (
-          <>
-            <ResponseBox responseText={responseSugestion} />
-            <BaseText fontSize="16px">
-              Clique para copiar o conteúdo da resposta!
-            </BaseText>
-          </>
+            <div className=" mt-0 mb-md-0 mb-3 d-flex justify-content-center">
+              <BaseButton
+                variant="primary"
+                onClick={handleSendFile}
+                loading={loading}
+              >
+                Enviar Arquivo
+              </BaseButton>
+            </div>
+            {responseSugestionForFile && (
+              <>
+                <ResponseBox responseText={responseSugestionForFile} />
+                <BaseText fontSize="16px">
+                  Clique para copiar o conteúdo da resposta!
+                </BaseText>
+              </>
+            )}
+          </div>
+        ) : (
+          <div className="w-100">
+            <BaseText fontSize="16px">Insira o texto do email</BaseText>
+            <BaseTextArea
+              value={emailText}
+              onChange={setEmailText}
+              placeholder="Digite o email aqui"
+            />
+            <div className=" mt-0 mb-md-0 mb-3 d-flex justify-content-center">
+              <BaseButton
+                variant="primary"
+                onClick={handleSendText}
+                loading={loading}
+              >
+                Enviar Texto
+              </BaseButton>
+            </div>
+            {responseSugestionForText && (
+              <>
+                <ResponseBox responseText={responseSugestionForText} />
+                <BaseText fontSize="16px">
+                  Clique para copiar o conteúdo da resposta!
+                </BaseText>
+              </>
+            )}
+          </div>
         )}
       </BaseCard>
     </div>

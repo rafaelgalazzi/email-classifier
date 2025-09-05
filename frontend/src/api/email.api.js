@@ -5,17 +5,14 @@ export function emailApi() {
     return await api.post("/process-email-text", { emailText: text });
   }
 
-  async function sendEmailFileToProcess(files) {
+  async function sendEmailFileToProcess(file) {
     const formData = new FormData();
-    files.forEach((file) => formData.append("files", file)); // pode enviar vários
+    formData.append("file", file);
 
     return await api.post("/process-email-file", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
+      headers: { "Content-Type": "multipart/form-data" },
     });
   }
-
   return {
     sendEmailTextToProcess,
     sendEmailFileToProcess,
