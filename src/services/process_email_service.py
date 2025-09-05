@@ -35,7 +35,7 @@ class ProcessEmailService:
 
         return {
             'classification': classification,
-            'response_sugestion': suggestion
+            'response_suggestion': suggestion
         }
 
     async def process_email_text(self, text):
@@ -52,5 +52,5 @@ class ProcessEmailService:
 
         return {
             'classification': classification,
-            'response_sugestion': suggestion
+            'response_suggestion': suggestion
         }

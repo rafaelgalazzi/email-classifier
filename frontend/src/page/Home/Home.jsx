@@ -12,8 +12,8 @@ export function Home() {
   const [loading, setLoading] = useState(false);
   const [filesToSent, setFilesToSent] = useState([]);
   const [emailText, setEmailText] = useState("");
-  const [responseSugestionForFile, setResponseSugestionForFile] = useState("");
-  const [responseSugestionForText, setResponseSugestionForText] = useState("");
+  const [responseSuggestionForFile, setResponseSuggestionForFile] = useState("");
+  const [responseSuggestionForText, setResponseSuggestionForText] = useState("");
   const [classificationForFile, setClassificationForFile] = useState("");
   const [classificationForText, setClassificationForText] = useState("");
   const { sendEmailTextToProcess, sendEmailFileToProcess } = emailApi();
@@ -37,7 +37,7 @@ export function Home() {
       setLoading(true);
       const response = await sendEmailTextToProcess(emailText);
       console.log(response);
-      setResponseSugestionForText(response.data.response_sugestion);
+      setResponseSuggestionForText(response.data.response_suggestion);
       setClassificationForText(response.data.classification);
       return;
     } catch (e) {
@@ -57,7 +57,7 @@ export function Home() {
       setLoading(true);
       const response = await sendEmailFileToProcess(filesToSent[0]);
       console.log(response);
-      setResponseSugestionForFile(response.data.response_sugestion);
+      setResponseSuggestionForFile(response.data.response_suggestion);
       setClassificationForFile(response.data.classification);
       return;
     } catch (e) {
@@ -117,7 +117,7 @@ export function Home() {
                 </BaseText>
               )}
 
-              {responseSugestionForFile && (
+              {responseSuggestionForFile && (
                 <>
                   <BaseText
                     className='px-md-3 px-1 mt-4'
@@ -126,7 +126,7 @@ export function Home() {
                   >
                     Sujestão de resposta:
                   </BaseText>
-                  <ResponseBox responseText={responseSugestionForFile} />
+                  <ResponseBox responseText={responseSuggestionForFile} />
                   <BaseText fontSize="16px">
                     Clique para na caixa acima para copiar a resposta!
                   </BaseText>
@@ -158,12 +158,12 @@ export function Home() {
                 </BaseText>
               )}
 
-              {responseSugestionForText && (
+              {responseSuggestionForText && (
                 <>
                   <BaseText className='px-md-3 px-1 mt-4' fontSize="16px" justify="start">
                     Sujestão de resposta:
                   </BaseText>
-                  <ResponseBox responseText={responseSugestionForText} />
+                  <ResponseBox responseText={responseSuggestionForText} />
                   <BaseText fontSize="16px">
                     Clique para na caixa acima para copiar a resposta!
                   </BaseText>
