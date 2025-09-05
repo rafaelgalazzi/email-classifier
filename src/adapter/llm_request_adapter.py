@@ -9,27 +9,36 @@ class LLMRequestAdapter:
 
     async def send_data_to_llm_and_decide(self, text: str) -> str:
         prompt = f"""
-        Classifique o texto abaixo como 'produtivo' ou 'improdutivo'.
-        Responda apenas com uma das palavras: produtivo ou improdutivo.
+        Classifique o texto abaixo como 'Produtivo' ou 'Improdutivo'.
+        Produtivo: Emails que requerem uma ação ou resposta específica
+        (ex.: solicitações de suporte técnico, atualização sobre casos em aberto, dúvidas sobre o sistema).
+        Improdutivo: Emails que não necessitam de uma ação imediata 
+        (ex.: mensagens de felicitações, agradecimentos).
+        Responda apenas com uma das palavras: Produtivo ou Improdutivo.
 
         Texto: {text}
         """
-        response = self.model.generate_content(prompt)
-        return response.text.strip().lower()
+        return await self.request_to_llm(prompt)
 
     async def suggest_response(self, text: str, classification: str) -> str:
-        if classification == "improdutivo":
-            return "Obrigado pela sua mensagem!"
-        
+        if classification == "Improdutivo":
+            prompt = f"""
+            O texto abaixo foi classificado como 'Improdutivo'. 
+            Sugira uma resposta profissional e direta para o e-mail.
+
+            Texto: {text}
+            """
+
+            return await self.request_to_llm(prompt)
+    
         prompt = f"""
-        O texto abaixo foi classificado como 'produtivo'. 
+        O texto abaixo foi classificado como 'Produtivo'. 
         Sugira uma resposta profissional e direta para o e-mail.
 
         Texto: {text}
         """
-        response = self.model.generate_content(prompt)
-        return response.text.strip()
+        return await self.request_to_llm(prompt)
 
-    async def request_to_llm(self, prompt: str) -> str:
+    async def request_to_llm(self, prompt: str):
         response = self.model.generate_content(prompt)
         return response.text.strip()

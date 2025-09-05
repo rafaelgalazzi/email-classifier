@@ -4,11 +4,13 @@ export function BaseText(props) {
     fontSize = '16px', 
     justify = 'center', 
     align = 'center', 
-    color = '#e0e0e0'
+    color = '#e0e0e0',
+    className = ''
   } = props;
 
   return (
     <div 
+      className={`${className}`}
       style={{ 
         width, 
         fontSize, 

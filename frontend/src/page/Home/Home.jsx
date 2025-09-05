@@ -62,7 +62,7 @@ export function Home() {
       return;
     } catch (e) {
       console.log(e);
-      alert("Erro ao processar email: " + e);
+      alert("Erro ao processar email: " + e?.message);
     } finally {
       setLoading(false);
     }
@@ -93,6 +93,7 @@ export function Home() {
             <BaseText fontSize="16px">Insira os arquivos .pdf/.txt</BaseText>
             <div className="p-md-3 p-1">
               <BaseFileInput
+                value={filesToSent}
                 onFilesSelected={handleFiles}
                 allowDirectories={true}
                 maxFiles={1}
@@ -109,14 +110,29 @@ export function Home() {
                 Enviar Arquivo
               </BaseButton>
             </div>
-            {responseSugestionForFile && (
-              <>
-                <ResponseBox responseText={responseSugestionForFile} />
+            <div className="mt-4">
+              {classificationForFile && (
                 <BaseText fontSize="16px">
-                  Clique para copiar o conteúdo da resposta!
+                  Classificação do email: {classificationForFile}{" "}
                 </BaseText>
-              </>
-            )}
+              )}
+
+              {responseSugestionForFile && (
+                <>
+                  <BaseText
+                    className='px-md-3 px-1 mt-4'
+                    fontSize="16px"
+                    justify="start"
+                  >
+                    Sujestão de resposta:
+                  </BaseText>
+                  <ResponseBox responseText={responseSugestionForFile} />
+                  <BaseText fontSize="16px">
+                    Clique para na caixa acima para copiar a resposta!
+                  </BaseText>
+                </>
+              )}
+            </div>
           </div>
         ) : (
           <div className="w-100">
@@ -135,17 +151,25 @@ export function Home() {
                 Enviar Texto
               </BaseButton>
             </div>
-
-
-
-            {responseSugestionForText && (
-              <>
-                <ResponseBox responseText={responseSugestionForText} />
+            <div className="mt-4">
+              {classificationForText && (
                 <BaseText fontSize="16px">
-                  Clique para copiar o conteúdo da resposta!
+                  Classificação do email: {classificationForText}{" "}
                 </BaseText>
-              </>
-            )}
+              )}
+
+              {responseSugestionForText && (
+                <>
+                  <BaseText className='px-md-3 px-1 mt-4' fontSize="16px" justify="start">
+                    Sujestão de resposta:
+                  </BaseText>
+                  <ResponseBox responseText={responseSugestionForText} />
+                  <BaseText fontSize="16px">
+                    Clique para na caixa acima para copiar a resposta!
+                  </BaseText>
+                </>
+              )}
+            </div>
           </div>
         )}
       </BaseCard>

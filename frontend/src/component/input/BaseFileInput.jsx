@@ -1,15 +1,24 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styles from "./BaseFileInput.module.css";
 
 export function BaseFileInput({
+  value, // novo prop para controlar externamente
   onFilesSelected,
   accept = ".pdf,.txt",
-  maxFiles = 5, // novo limite por padrão
-  disabled = false, // nova prop para desabilitar
+  maxFiles = 5,
+  disabled = false,
 }) {
-  const [isDragOver, setIsDragOver] = useState(false);
-  const [files, setFiles] = useState([]);
+  const [internalFiles, setInternalFiles] = useState([]);
   const fileInputRef = useRef(null);
+
+  // Se value for passado, usamos ele. Senão, usamos o state interno.
+  const files = value !== undefined ? value : internalFiles;
+
+  useEffect(() => {
+    if (value !== undefined) {
+      setInternalFiles(value); // mantém interno sincronizado para render inicial
+    }
+  }, [value]);
 
   const acceptedList = accept.split(",").map((t) => t.trim().toLowerCase());
 
@@ -17,44 +26,45 @@ export function BaseFileInput({
     acceptedList.some((type) => file.name.toLowerCase().endsWith(type));
 
   const mergeFiles = (incoming) => {
-    if (disabled) return; // impede merge se desabilitado
+    if (disabled) return;
 
     let incomingArr = Array.from(incoming).filter(isAccepted);
 
-    // Se exceder o limite, corta os extras
     if (files.length + incomingArr.length > maxFiles) {
       const availableSlots = maxFiles - files.length;
       incomingArr = incomingArr.slice(0, availableSlots);
       console.warn(`Limite de ${maxFiles} arquivos atingido.`);
     }
 
-    // Evita duplicados (por name + size + lastModified)
     const key = (f) => `${f.name}_${f.size}_${f.lastModified}`;
     const map = new Map(files.map((f) => [key(f), f]));
     incomingArr.forEach((f) => map.set(key(f), f));
 
     const next = Array.from(map.values());
-    setFiles(next);
+    if (value === undefined) {
+      setInternalFiles(next);
+    }
     onFilesSelected?.(next);
   };
 
   const handleDrop = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsDragOver(false);
     if (!disabled) mergeFiles(e.dataTransfer.files);
   };
 
   const handleChange = (e) => {
     if (!disabled) mergeFiles(e.target.files);
-    e.target.value = ""; // permite re-selecionar o mesmo arquivo
+    e.target.value = "";
   };
 
   const removeAt = (idx) => (e) => {
     e.stopPropagation();
     if (disabled) return;
     const next = files.filter((_, i) => i !== idx);
-    setFiles(next);
+    if (value === undefined) {
+      setInternalFiles(next);
+    }
     onFilesSelected?.(next);
   };
 
@@ -62,21 +72,7 @@ export function BaseFileInput({
 
   return (
     <div
-      className={`${styles.fileInputContainer} ${
-        isDragOver ? styles.dragOver : ""
-      } ${disabled ? styles.disabled : ""}`}
-      onDragOver={(e) => {
-        if (disabled) return;
-        e.preventDefault();
-        e.stopPropagation();
-        setIsDragOver(true);
-      }}
-      onDragLeave={(e) => {
-        if (disabled) return;
-        e.preventDefault();
-        e.stopPropagation();
-        setIsDragOver(false);
-      }}
+      className={`${styles.fileInputContainer} ${disabled ? styles.disabled : ""}`}
       onDrop={handleDrop}
       onClick={() => {
         if (!disabled) fileInputRef.current?.click();
