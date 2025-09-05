@@ -1,7 +1,20 @@
+import spacy
+
 class NLPProcessAdapter:
+    def __init__(self, lang= 'pt'):
+        if lang == 'pt':
+            self.nlp = spacy.load("pt_core_news_sm")
+        else: 
+            self.nlp = spacy.load("en_core_web_sm")
 
-    def __init__(self):
-        pass
+    def nlp_pre_process(self, text: str) -> str:
+        if not text or not isinstance(text, str):
+            return ""
 
-    def nlp_process(self):
-        return 'Request'
+        doc = self.nlp(text.lower())
+        tokens = [
+            token.lemma_
+            for token in doc
+            if not token.is_stop and token.is_alpha
+        ]
+        return " ".join(tokens)

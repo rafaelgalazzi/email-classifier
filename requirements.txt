@@ -1,7 +1,14 @@
-fastapi[standard]
+fastapi
+uvicorn[standard]
+spacy==3.7.2
 pypdf
+python-multipart
+google-generativeai
+python-dotenv
+https://github.com/explosion/spacy-models/releases/download/pt_core_news_sm-3.7.0/pt_core_news_sm-3.7.0-py3-none-any.whl
+https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.7.1/en_core_web_sm-3.7.1-py3-none-any.whl
 
 
 # Create a virtual env with python -m venv venv
 # Activate the virtual env .\venv\Scripts\Activate
-# fastapi dev main.py
+# uvicorn main:app --reload

@@ -22,16 +22,16 @@ async def process_email_file(file: UploadFile = File(...)):
     email_service = ProcessEmailService()
     process_email_result = await email_service.process_email_file(file)
     return JSONResponse(content={
-        "responseSugestion": process_email_result,
-        "category": "productive"
+        "response_sugestion": process_email_result["response_sugestion"],
+        "classification": process_email_result["classification"]
     })
 
 @app.post("/process-email-text")
 async def process_email_text(payload: dict = Body(...)):
     email_text = payload.get("emailText")
     email_service = ProcessEmailService()
-    process_email_result = email_service.process_email_text(email_text)
+    process_email_result = await email_service.process_email_text(email_text)
     return JSONResponse(content={
-        "responseSugestion": process_email_result,
-        "category": "productive"
+        "response_sugestion": process_email_result["response_sugestion"],
+        "classification": process_email_result["classification"]
     })

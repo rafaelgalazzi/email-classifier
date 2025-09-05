@@ -14,6 +14,8 @@ export function Home() {
   const [emailText, setEmailText] = useState("");
   const [responseSugestionForFile, setResponseSugestionForFile] = useState("");
   const [responseSugestionForText, setResponseSugestionForText] = useState("");
+  const [classificationForFile, setClassificationForFile] = useState("");
+  const [classificationForText, setClassificationForText] = useState("");
   const { sendEmailTextToProcess, sendEmailFileToProcess } = emailApi();
   const [emailType, setEmailType] = useState("file");
 
@@ -35,7 +37,8 @@ export function Home() {
       setLoading(true);
       const response = await sendEmailTextToProcess(emailText);
       console.log(response);
-      setResponseSugestionForText(response.data.responseSugestion);
+      setResponseSugestionForText(response.data.response_sugestion);
+      setClassificationForText(response.data.classification);
       return;
     } catch (e) {
       console.log(e);
@@ -54,7 +57,8 @@ export function Home() {
       setLoading(true);
       const response = await sendEmailFileToProcess(filesToSent[0]);
       console.log(response);
-      setResponseSugestionForFile(response.data.responseSugestion);
+      setResponseSugestionForFile(response.data.response_sugestion);
+      setClassificationForFile(response.data.classification);
       return;
     } catch (e) {
       console.log(e);
@@ -131,6 +135,9 @@ export function Home() {
                 Enviar Texto
               </BaseButton>
             </div>
+
+
+
             {responseSugestionForText && (
               <>
                 <ResponseBox responseText={responseSugestionForText} />
