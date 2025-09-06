@@ -4,6 +4,8 @@
 
 O Classificador de E-mails é uma aplicação full-stack que utiliza inteligência artificial para classificar e-mails como "Produtivos" ou "Improdutivos" e sugerir respostas apropriadas. A aplicação permite o processamento de e-mails através de arquivos (PDF/TXT) ou texto direto.
 
+A aplicação deployada esta disponível em: https://email-classifier-production-54c1.up.railway.app/
+
 ### Funcionalidades
 
 - Classificação automática de e-mails como "Produtivos" ou "Improdutivos"
