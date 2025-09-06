@@ -2,26 +2,25 @@ import React, { useState, useRef, useEffect } from "react";
 import styles from "./BaseFileInput.module.css";
 
 export function BaseFileInput({
-  value, // novo prop para controlar externamente
+  value,
   onFilesSelected,
   accept = ".pdf,.txt",
   maxFiles = 5,
   disabled = false,
 }) {
   const [internalFiles, setInternalFiles] = useState([]);
+  const [isDragOver, setIsDragOver] = useState(false);
   const fileInputRef = useRef(null);
 
-  // Se value for passado, usamos ele. Senão, usamos o state interno.
   const files = value !== undefined ? value : internalFiles;
 
   useEffect(() => {
     if (value !== undefined) {
-      setInternalFiles(value); // mantém interno sincronizado para render inicial
+      setInternalFiles(value);
     }
   }, [value]);
 
   const acceptedList = accept.split(",").map((t) => t.trim().toLowerCase());
-
   const isAccepted = (file) =>
     acceptedList.some((type) => file.name.toLowerCase().endsWith(type));
 
@@ -50,7 +49,20 @@ export function BaseFileInput({
   const handleDrop = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    setIsDragOver(false);
     if (!disabled) mergeFiles(e.dataTransfer.files);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!disabled) setIsDragOver(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOver(false);
   };
 
   const handleChange = (e) => {
@@ -72,8 +84,12 @@ export function BaseFileInput({
 
   return (
     <div
-      className={`${styles.fileInputContainer} ${disabled ? styles.disabled : ""}`}
+      className={`${styles.fileInputContainer} ${
+        isDragOver ? styles.dragOver : ""
+      } ${disabled ? styles.disabled : ""}`}
       onDrop={handleDrop}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
       onClick={() => {
         if (!disabled) fileInputRef.current?.click();
       }}
