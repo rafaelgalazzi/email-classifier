@@ -13,10 +13,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
-
 @app.post("/process-email-file")
 async def process_email_file(file: UploadFile = File(...)):
     email_service = ProcessEmailService()

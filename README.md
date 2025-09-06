@@ -29,9 +29,7 @@ O Classificador de E-mails é uma aplicação full-stack que utiliza inteligênc
 
 ## Pré-requisitos
 
-- Python 3.12+
-- Node.js 16+
-- Docker e Docker Compose (para execução containerizada)
+- Docker instalado
 - Conta no Google AI Studio com chave de API
 
 ## Configuração Inicial
@@ -44,50 +42,7 @@ O Classificador de E-mails é uma aplicação full-stack que utiliza inteligênc
      GOOGLE_API_KEY=SuaChaveDeAPIAqui
      ```
 
-## Execução Local
-
-### Backend
-
-1. **Criar ambiente virtual**:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # Linux/Mac
-   # ou
-   venv\Scripts\Activate  # Windows
-   ```
-
-2. **Instalar dependências**:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Executar o servidor**:
-   ```bash
-   uvicorn main:app --reload
-   ```
-
-### Frontend
-
-1. **Instalar dependências**:
-   ```bash
-   cd frontend
-   npm install
-   ```
-
-2. **Executar o servidor de desenvolvimento**:
-   ```bash
-   npm start
-   ```
-
-3. **Acessar a aplicação**:
-   - Frontend: http://localhost:3000
-   - Backend API: http://localhost:8000
-
 ## Execução com Docker
-
-### Pré-requisitos
-- Docker instalado
-- Docker Compose instalado
 
 ### Como executar
 
@@ -96,24 +51,15 @@ O Classificador de E-mails é uma aplicação full-stack que utiliza inteligênc
    GOOGLE_API_KEY=SuaChaveDeAPIAqui
    ```
 
-2. **Executar com Docker Compose**:
+2. **Construir e executar com Docker**:
    ```bash
-   docker-compose up --build
+   docker build -t email-classifier .
+   docker run -p 80:80 --env-file .env email-classifier
    ```
 
-3. **Para rodar em background**:
-   ```bash
-   docker-compose up --build -d
-   ```
-
-4. **Acessar a aplicação**:
-   - Frontend: http://localhost:3000
-   - Backend API: http://localhost:8000
-
-5. **Parar os containers**:
-   ```bash
-   docker-compose down
-   ```
+3. **Acessar a aplicação**:
+   - Aplicação: http://localhost
+   - Backend API: http://localhost/api
 
 ## Deploy em Plataformas Gratuitas
 
@@ -122,7 +68,7 @@ O Classificador de E-mails é uma aplicação full-stack que utiliza inteligênc
 1. **Crie uma conta em [railway.app](https://railway.app)**
 2. **Conecte seu repositório GitHub**
 3. **Selecione o repositório com seu projeto**
-4. **Railway detectará automaticamente o docker-compose.yml**
+4. **Railway detectará automaticamente o Dockerfile**
 5. **Configure as variáveis de ambiente (GOOGLE_API_KEY)**
 6. **Clique em "Deploy"**
 
@@ -131,7 +77,7 @@ O Classificador de E-mails é uma aplicação full-stack que utiliza inteligênc
 1. **Crie uma conta em [render.com](https://render.com)**
 2. **Conecte seu repositório GitHub**
 3. **Escolha "Web Service"**
-4. **Configure para usar docker-compose**
+4. **Configure para usar Dockerfile**
 5. **Defina as variáveis de ambiente**
 6. **Faça o deploy**
 
@@ -155,9 +101,8 @@ email-classifier/
 │   └── ...
 ├── main.py
 ├── requirements.txt
-├── Dockerfile.backend
-├── Dockerfile.frontend
-├── docker-compose.yml
+├── requirements-docker.txt
+├── Dockerfile
 ├── nginx.conf
 └── .env
 ```
@@ -166,13 +111,13 @@ email-classifier/
 
 ### Processar arquivo de e-mail
 ```
-POST /process-email-file
+POST /api/process-email-file
 Content-Type: multipart/form-data
 ```
 
 ### Processar texto de e-mail
 ```
-POST /process-email-text
+POST /api/process-email-text
 Content-Type: application/json
 Body: { "emailText": "Texto do e-mail aqui" }
 ```
@@ -190,6 +135,16 @@ Body: { "emailText": "Texto do e-mail aqui" }
 - A chave deve ser configurada na variável de ambiente `GOOGLE_API_KEY`
 - O modelo utilizado é o `gemini-1.5-flash`, que é gratuito mas tem limites de uso
 - Para produção, considere utilizar modelos pagos com maiores limites
+
+## Arquitetura Docker
+
+O projeto utiliza uma abordagem de multi-stage build com um único Dockerfile que:
+
+1. **Build do Frontend**: Utiliza Node.js Alpine para construir a aplicação React
+2. **Backend + Nginx**: 
+   - Utiliza Python 3.11 slim para executar o backend FastAPI
+   - Instala o Nginx para servir o frontend e fazer proxy reverso para o backend
+   - Configura o Nginx para servir o frontend na raiz (/) e o backend na rota /api
 
 ## Limitações Conhecidas
 
