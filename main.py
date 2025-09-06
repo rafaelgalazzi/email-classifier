@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from src.services.process_email_service import ProcessEmailService
 
-app = FastAPI(title="AutoU Email Classifier")
+app = FastAPI(title="AutoU Email Classifier", root_path="/api")
 
 app.add_middleware(
     CORSMiddleware,
