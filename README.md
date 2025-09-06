@@ -162,4 +162,4 @@ O projeto utiliza uma abordagem de multi-stage build com um único Dockerfile qu
 
 ## Licença
 
-Este repositório é fornecido exclusivamente para avaliação de habilidades técnicas no processo de recrutamento da AutoU. Nenhum direito é concedido para uso, modificação ou redistribuição do código sem permissão explícita do autor.
+Este repositório é fornecido exclusivamente para avaliação de habilidades técnicas. Nenhum direito é concedido para uso, modificação ou redistribuição do código sem permissão explícita do autor.
