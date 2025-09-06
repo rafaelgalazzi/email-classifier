@@ -26,8 +26,8 @@ COPY --from=build-frontend /app/build /var/www/html
 # Copia config do Nginx
 COPY nginx.conf /etc/nginx/nginx.conf
 
-# Expondo porta que o Railway vai mapear
+# Expondo a porta que o Railway vai mapear
 EXPOSE 80
 
-# Sobe backend e Nginx juntos
-CMD service nginx start && uvicorn main:app --host 0.0.0.0 --port ${PORT}
+# Comando para rodar FastAPI + Nginx juntos
+CMD uvicorn main:app --host 0.0.0.0 --port 8000 & nginx -g "daemon off;"
